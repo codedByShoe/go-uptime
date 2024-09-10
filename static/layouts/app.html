@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="/static/dist/css/style.css">
+  <link rel="stylesheet" href="/static/dist/css/fontawesome.css">
+  <title>go-uptime</title>
+</head>
+
+<body class="bg-light">
+  {{ template "partials/header" . }}
+  <main class="container py-4">
+    {{ embed }}
+  </main>
+  <script src="/static/dist/js/main.js"></script>
+</body>
+
+</html>

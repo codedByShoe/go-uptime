@@ -1,0 +1,148 @@
+// bootstrap override
+// $font-family-sans-serif: 'Inter', sans-serif;
+
+// Buttons
+$button-radius: 0.25rem;
+$button-padding-x: 0.75rem;
+$button-padding-y: 0.375rem;
+
+// update bootstrap color variables
+$primary: #18181b;
+$secondary: #f4f4f5;
+$success: #10b981;
+$info: #6f2cf4;
+$warning: #f59e0b;
+$danger: #ef4444;
+$light: #f0f3f2;
+$dark: #cccccc;
+
+// Button hover colors
+$btn-hover-bg-shade-amount: 15%;
+$btn-hover-bg-tint-amount: 15%;
+$btn-hover-border-shade-amount: 20%;
+$btn-hover-border-tint-amount: 10%;
+
+// Primary button hover
+$btn-primary-hover-bg: lighten($primary, $btn-hover-bg-shade-amount);
+$btn-primary-hover-border: lighten($primary, $btn-hover-border-shade-amount);
+
+// Secondary button hover
+$btn-secondary-hover-bg: darken($secondary, $btn-hover-bg-shade-amount);
+$btn-secondary-hover-border: darken($secondary, $btn-hover-border-shade-amount);
+
+// Success button hover
+$btn-success-hover-bg: darken($success, $btn-hover-bg-shade-amount);
+$btn-success-hover-border: darken($success, $btn-hover-border-shade-amount);
+
+// Info button hover
+$btn-info-hover-bg: darken($info, $btn-hover-bg-shade-amount);
+$btn-info-hover-border: darken($info, $btn-hover-border-shade-amount);
+
+// Warning button hover
+$btn-warning-hover-bg: darken($warning, $btn-hover-bg-shade-amount);
+$btn-warning-hover-border: darken($warning, $btn-hover-border-shade-amount);
+
+// Danger button hover
+$btn-danger-hover-bg: darken($danger, $btn-hover-bg-shade-amount);
+$btn-danger-hover-border: darken($danger, $btn-hover-border-shade-amount);
+
+$btn-border-radius: $button-radius;
+$btn-border-radius-sm: $button-radius;
+$btn-border-radius-lg: $button-radius;
+$btn-padding-y: $button-padding-y;
+$btn-padding-y-lg: $button-padding-y;
+$btn-padding-y-sm: $button-padding-y;
+$btn-padding-x: $button-padding-x;
+$btn-padding-x-lg: $button-padding-x;
+$btn-padding-x-sm: $button-padding-x;
+
+// @import '../../node_modules/bootstrap/scss/bootstrap.scss';
+// Configuration
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/variables-dark";
+@import "../../node_modules/bootstrap/scss/maps";
+@import "../../node_modules/bootstrap/scss/mixins";
+@import "../../node_modules/bootstrap/scss/utilities";
+
+// Layout & components
+@import "../../node_modules/bootstrap/scss/root";
+@import "../../node_modules/bootstrap/scss/reboot";
+@import "../../node_modules/bootstrap/scss/type";
+@import "../../node_modules/bootstrap/scss/images";
+@import "../../node_modules/bootstrap/scss/containers";
+@import "../../node_modules/bootstrap/scss/grid";
+@import "../../node_modules/bootstrap/scss/tables";
+@import "../../node_modules/bootstrap/scss/forms";
+@import "../../node_modules/bootstrap/scss/buttons";
+@import "../../node_modules/bootstrap/scss/transitions";
+@import "../../node_modules/bootstrap/scss/dropdown";
+@import "../../node_modules/bootstrap/scss/button-group";
+@import "../../node_modules/bootstrap/scss/nav";
+@import "../../node_modules/bootstrap/scss/navbar";
+@import "../../node_modules/bootstrap/scss/card";
+// @import "../../node_modules/bootstrap/scss/accordion";
+// @import "../../node_modules/bootstrap/scss/breadcrumb";
+// @import "../../node_modules/bootstrap/scss/pagination";
+@import "../../node_modules/bootstrap/scss/badge";
+@import "../../node_modules/bootstrap/scss/alert";
+@import "../../node_modules/bootstrap/scss/progress";
+@import "../../node_modules/bootstrap/scss/list-group";
+@import "../../node_modules/bootstrap/scss/close";
+@import "../../node_modules/bootstrap/scss/toasts";
+@import "../../node_modules/bootstrap/scss/modal";
+// @import "../../node_modules/bootstrap/scss/tooltip";
+@import "../../node_modules/bootstrap/scss/popover";
+// @import "../../node_modules/bootstrap/scss/carousel";
+@import "../../node_modules/bootstrap/scss/spinners";
+// @import "../../node_modules/bootstrap/scss/offcanvas";
+@import "../../node_modules/bootstrap/scss/placeholders";
+
+// Helpers
+@import "../../node_modules/bootstrap/scss/helpers";
+
+// Utilities
+@import "../../node_modules/bootstrap/scss/utilities/api";
+
+
+// Custom button hover styles
+.btn-primary:hover {
+  background-color: $btn-primary-hover-bg;
+  border-color: $btn-primary-hover-border;
+}
+
+.btn-secondary:hover {
+  background-color: $btn-secondary-hover-bg;
+  border-color: $btn-secondary-hover-border;
+}
+
+.btn-success:hover {
+  background-color: $btn-success-hover-bg;
+  border-color: $btn-success-hover-border;
+}
+
+.btn-info:hover {
+  background-color: $btn-info-hover-bg;
+  border-color: $btn-info-hover-border;
+}
+
+.btn-warning:hover {
+  background-color: $btn-warning-hover-bg;
+  border-color: $btn-warning-hover-border;
+}
+
+.btn-danger:hover {
+  background-color: $btn-danger-hover-bg;
+  border-color: $btn-danger-hover-border;
+}
+
+// custom dropdown-item hover color
+.dropdown-item:hover {
+  color: $info;
+  transition: color 0.15s ease-in-out;
+}
+
+.nav-item .active {
+  border-bottom: 2px solid $info;
+  transition: color 0.15s ease-in-out;
+}

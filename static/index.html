@@ -1,0 +1,55 @@
+{{ if not .Sites }}
+<div class="text-center">
+  <h4>There are no sites to display... </h4>
+</div>
+{{ else }}
+<div class="card shadow">
+  <table class="table">
+    <thead>
+      <tr class="table-light">
+        <th scope="col">Location</th>
+        <th scope="col">Frequency</th>
+        <th scope="col">Last Check</th>
+        <th scope="col">Status</th>
+        <th scope="col">Uptime</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range .Sites }}
+      <tr>
+        <th>{{ .Url }}</th>
+        <th>{{ .Frequency }}</th>
+        <th>{{ .LastChecked }}</th>
+        <th>{{ .Status }}</th>
+        <th>100%</th>
+
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+</div>
+{{ end }}
+
+
+
+<!-- add-site-modal -->
+<div id="add-site-modal" class="modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New Site</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="add-site-form" action="/add" method="POST">
+          <input type="text" name="url" class="form-control mb-3" placeholder="https://example.com">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" form="add-site-form" class="btn btn-primary">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
