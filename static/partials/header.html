@@ -5,8 +5,8 @@
     </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto">
-        <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2 active" aria-current="page">{{ if .Url
-            }}{{ .Url }} {{ else }} Dashboard{{ end }}</a>
+        <li class="nav-item"><a href="/" class="nav-link link-body-emphasis px-2 active"
+            aria-current="page">Dashboard</a>
         </li>
       </ul>
       <ul class="navbar-nav">
@@ -26,7 +26,16 @@
 <header class="mb-4 border-bottom bg-body-tertiary shadow-sm">
   <nav class="navbar">
     <div class="container px-5">
-      <h1 class="navbar-brand mx-2">Dashboard</h1>
+      <!-- CurrentPath not working -->
+      {% if CurrentPath == "/" %}
+      <a href="/" class="navbar-brand mx-2">
+        <i class="fa-solid fa-chevron-left"></i>
+      </a>
+      {% endif %}
+
+      <h1 class="navbar-brand mx-2">
+        {%if Site.Url %}{{ Site.Url }} {% else %}Dashboard{% endif %}
+      </h1>
       <ul class="nav">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

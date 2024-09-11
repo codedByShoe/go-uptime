@@ -5,6 +5,8 @@ go 1.23.0
 require github.com/gofiber/template/html/v2 v2.1.2
 
 require (
+	github.com/flosch/pongo2/v6 v6.0.0 // indirect
+	github.com/gofiber/template/django/v3 v3.1.12 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/mattn/go-sqlite3 v1.14.23 // indirect

@@ -1,35 +1,31 @@
-{{ if not .Sites }}
+{% if not Sites %}
 <div class="text-center">
   <h4>There are no sites to display... </h4>
 </div>
-{{ else }}
-<div class="card shadow">
+{% else %}
+<!-- display sites -->
+{% for Site in Sites %}
+<div class="card">
   <table class="table">
     <thead>
       <tr class="table-light">
-        <th scope="col">Location</th>
-        <th scope="col">Frequency</th>
-        <th scope="col">Last Check</th>
-        <th scope="col">Status</th>
-        <th scope="col">Uptime</th>
+        <th scope="col">Site</th>
+        <th scope="col">Endpoints</th>
         <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
-      {{ range .Sites }}
       <tr>
-        <th>{{ .Url }}</th>
-        <th>{{ .Frequency }}</th>
-        <th>{{ .LastChecked }}</th>
-        <th>{{ .Status }}</th>
-        <th>100%</th>
-
+        <th>{{ Site.Url }}</th>
+        <!-- get the number of endpoints -->
+        <th>{{ Site.Endpoints | length }}</th>
+        <th><a href="/site/{{ Site.ID }}">View</a></th>
       </tr>
-      {{ end }}
     </tbody>
   </table>
 </div>
-{{ end }}
+{% endfor %}
+{% endif %}
 
 
 

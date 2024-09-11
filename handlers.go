@@ -1,51 +1,47 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"sync"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
-type handler struct{}
-
-var (
-	sites []Site
-	mu    sync.Mutex
-)
-
-func NewHandler() *handler {
-	return &handler{}
+type handler struct {
+	db *gorm.DB
 }
 
-func (*handler) getIndex(c *fiber.Ctx) error {
-	var sites []Site
-	site := Site{
-		Url:         "https://www.google.com",
-		Status:      checkSites("https://www.google.com"),
-		Frequency:   5 * time.Minute,
-		LastChecked: time.Now(),
-	}
-	// NOTE: This is temporary
-	site.ID = 1
+var (
+	mu sync.Mutex
+)
 
-	sites = append(sites, site)
+func NewHandler(db *gorm.DB) *handler {
+	return &handler{
+		db: db,
+	}
+}
+
+func (h *handler) getIndex(c *fiber.Ctx) error {
+	var sites []Site
+	if err := h.db.Model(&Site{}).Preload("Endpoints").Find(&sites).Error; err != nil {
+		return c.RedirectToRoute("index", fiber.Map{"Error": err.Error()})
+	}
 	return c.Render("index", fiber.Map{"Sites": sites}, "layouts/app")
 }
 
 func (h *handler) getSite(c *fiber.Ctx) error {
+	var site Site
 	id, err := c.ParamsInt("id")
 	if err != nil {
-		return c.Render("site", fiber.Map{"errors": "Invalid Site ID"}, "layouts/app")
+		return c.RedirectToRoute("index", fiber.Map{"Error": err.Error()})
 	}
-	// find site from sites by ID
-	for _, site := range sites {
-		if int(site.ID) == id {
-			return c.Render("site", fiber.Map{"Site": site}, "layouts/app")
-		}
+	if err := h.db.Model(&Site{}).Preload("Endpoints", "site_id = ?", id).First(&site, id).Error; err != nil {
+		return c.RedirectToRoute("index", fiber.Map{"Error": err.Error()})
 	}
-	return c.Redirect("/", 302)
+	return c.Render("site", fiber.Map{"Site": site}, "layouts/app")
 }
 
 func (*handler) getLogin(c *fiber.Ctx) error {
@@ -53,14 +49,28 @@ func (*handler) getLogin(c *fiber.Ctx) error {
 }
 
 func (h *handler) postAddSite(c *fiber.Ctx) error {
-	var site Site
-	site.Url = c.FormValue("url")
-
-	site.Frequency, _ = time.ParseDuration(c.FormValue("frequency"))
-	site.Status = checkSites(site.Url)
-	site.LastChecked = time.Now()
-	sites = append(sites, site)
-	return c.Redirect("/", 302)
+	url := c.FormValue("url")
+	site := Site{
+		Url: url,
+	}
+	// add site to database
+	if err := h.db.Create(&site).Error; err != nil {
+		return c.RedirectToRoute("index", fiber.Map{"Error": err.Error()})
+	}
+	// default endpoint & frequency
+	endpoint := Endpoint{
+		Path:        "/",
+		Status:      checkSites(site.Url),
+		Frequency:   5 * time.Minute,
+		LastChecked: time.Now(),
+		Uptime:      0,
+		SiteID:      site.ID,
+	}
+	// add endpoint to database
+	if err := h.db.Create(&endpoint).Error; err != nil {
+		return c.RedirectToRoute("index", fiber.Map{"Error": err.Error()})
+	}
+	return c.Redirect(fmt.Sprintf("/site/%d", site.ID), 302)
 }
 
 func checkSites(url string) string {
@@ -81,18 +91,19 @@ func checkSites(url string) string {
 	}
 }
 
-func monitorSites(site *Site, stop chan struct{}) {
-	ticker := time.NewTicker(site.Frequency)
-	defer ticker.Stop()
-	for {
-		select {
-		case <-ticker.C:
-			mu.Lock()
-			site.Status = checkSites(site.Url)
-			site.LastChecked = time.Now()
-			mu.Unlock()
-		case <-stop:
-			return
-		}
-	}
-}
+//
+// func monitorSites(site *Site, stop chan struct{}) {
+// 	ticker := time.NewTicker(site.Frequency)
+// 	defer ticker.Stop()
+// 	for {
+// 		select {
+// 		case <-ticker.C:
+// 			mu.Lock()
+// 			site.Status = checkSites(site.Url)
+// 			site.LastChecked = time.Now()
+// 			mu.Unlock()
+// 		case <-stop:
+// 			return
+// 		}
+// 	}
+// }

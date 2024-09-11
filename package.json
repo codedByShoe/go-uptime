@@ -1,7 +1,13 @@
 {
   "type": "module",
+  "scripts": {
+    "watch": "bun build static/js/main.js --outdir static/dist/js --watch --minify",
+    "sass:watch": "sass --no-source-map static/scss:static/dist/css --watch --style=compressed",
+    "dev": "concurrently \"bun run watch\" \"bun run sass:watch\""
+  },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.6.0",
-    "bootstrap": "^5.3.3"
+    "bootstrap": "^5.3.3",
+    "concurrently": "^9.0.0"
   }
 }

@@ -16,14 +16,15 @@ type User struct {
 type Site struct {
 	gorm.Model
 	Url       string `form:"url"`
-	Endpoints []Endpoints
+	Endpoints []Endpoint
 }
 
-type Endpoints struct {
+type Endpoint struct {
 	gorm.Model
 	Path        string        `form:"path"`
 	Status      string        `form:"status"`
 	Frequency   time.Duration `form:"frequency"`
 	LastChecked time.Time     `form:"last_checked"`
+	Uptime      float32       `form:"uptime"`
 	SiteID      uint          `form:"site_id"`
 }

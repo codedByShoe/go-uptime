@@ -1,10 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/template/html/v2"
+	"github.com/gofiber/template/django/v3"
 )
 
 func main() {
@@ -13,19 +14,26 @@ func main() {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	db.AutoMigrate(&User{}, &Site{})
+	db.AutoMigrate(&User{}, &Site{}, &Endpoint{})
 
-	engine := html.New("./static", ".html")
-	app := fiber.New(fiber.Config{Views: engine})
+	engine := django.New("./static", ".html")
 
-	h := NewHandler()
+	app := fiber.New(fiber.Config{
+		Views:             engine,
+		PassLocalsToViews: true,
+	})
 
 	app.Static("/static", "./static")
+	app.Use(func(c *fiber.Ctx) error {
+		c.Locals("CurrentPath", c.Path())
+		return c.Next()
+	})
+	h := NewHandler(db)
 
-	app.Get("/", h.getIndex)
-	app.Get("/login", h.getLogin)
-	app.Get("/site/:id", h.getSite)
-	app.Post("/add", h.postAddSite)
+	app.Get("/", h.getIndex).Name("index")
+	app.Get("/login", h.getLogin).Name("login")
+	app.Get("/site/:id", h.getSite).Name("site")
+	app.Post("/add", h.postAddSite).Name("add")
 
 	log.Fatal(app.Listen(":3000"))
 
