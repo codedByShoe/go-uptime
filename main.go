@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -24,16 +23,14 @@ func main() {
 	})
 
 	app.Static("/static", "./static")
-	app.Use(func(c *fiber.Ctx) error {
-		c.Locals("CurrentPath", c.Path())
-		return c.Next()
-	})
+
 	h := NewHandler(db)
 
 	app.Get("/", h.getIndex).Name("index")
 	app.Get("/login", h.getLogin).Name("login")
 	app.Get("/site/:id", h.getSite).Name("site")
 	app.Post("/add", h.postAddSite).Name("add")
+	app.Post("/endpoint/add", h.postAddEndpoint).Name("add-endpoint")
 
 	log.Fatal(app.Listen(":3000"))
 

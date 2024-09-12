@@ -1,28 +1,65 @@
 <div class="container">
-  <div class="card shadow">
-    <table class="table">
-      <thead>
-        <tr class="table-light">
-          <th scope="col">Location</th>
-          <th scope="col">Frequency</th>
-          <th scope="col">Last Check</th>
-          <th scope="col">Status</th>
-          <th scope="col">Uptime</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for Endpoint in Site.Endpoints %}
-        <tr>
-          <th>{{ Endpoint.Path }}</th>
-          <th>{{ Endpoint.Frequency }}</th>
-          <th>{{ Endpoint.LastChecked }}</th>
-          <th>{{ Endpoint.Status }}</th>
-          <th>100%</th>
+  <div class="row my-3">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <form action="/endpoint/add" method="POST">
+            <div class="row">
+              <div class="col-8">
+                <input type="text" class="form-control" id="endpoint" name="path" placeholder="/Endpoint" />
+              </div>
+              <div class="col-3">
+                <select class="form-select" id="frequency" name="frequency">
+                  <option value="5" selected>5 minutes</option>
+                  <option value="10">10 minutes</option>
+                  <option value="15">15 minutes</option>
+                  <option value="30">30 minutes</option>
+                  <option value="60">1 hour</option>
+                </select>
+              </div>
+              <div class="col">
+                <button class="btn btn-primary" type="submit">Add</button>
+              </div>
+              <input type="hidden" name="id" value="{{ Site.ID }}" />
+              <input type="hidden" name="url" value="{{ Site.Url }}" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Location</th>
+                <th scope="col">Frequency</th>
+                <th scope="col">Last Check</th>
+                <th scope="col">Status</th>
+                <th scope="col">Uptime</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for Endpoint in Site.Endpoints %}
+              <tr>
+                <td>{{ Endpoint.Path }}</td>
+                <td>{{ Endpoint.Frequency }}</td>
+                <td>{{ Endpoint.LastChecked }}</td>
+                <td><span class="badge bg-success">{{ Endpoint.Status }}</span></td>
+                <td>100%</td>
+                <td class="text-end"><a class="me-3" href="#"><i class="fa-solid fa-pen-to-square "></i></a> <a
+                    href="#"><i class="fa-regular fa-trash-can text-danger"></i></a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -26,16 +26,13 @@
 <header class="mb-4 border-bottom bg-body-tertiary shadow-sm">
   <nav class="navbar">
     <div class="container px-5">
-      <!-- CurrentPath not working -->
-      {% if CurrentPath == "/" %}
-      <a href="/" class="navbar-brand mx-2">
+      <a id="back-btn" href="/" class="navbar-brand mx-2">
         <i class="fa-solid fa-chevron-left"></i>
       </a>
-      {% endif %}
 
-      <h1 class="navbar-brand mx-2">
+      <h3 class="mx-2">
         {%if Site.Url %}{{ Site.Url }} {% else %}Dashboard{% endif %}
-      </h1>
+      </h3>
       <ul class="nav">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

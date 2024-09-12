@@ -5,6 +5,13 @@ import "bootstrap/js/dist/dropdown";
 import Modal from "bootstrap/js/dist/modal";
 import Alert from "bootstrap/js/dist/alert";
 
+// hide back-btn if route is /
+const route = window.location.pathname;
+if (route === "/") {
+  const backBtn = document.getElementById("back-btn");
+  backBtn.classList.add("d-none");
+}
+
 // get add-site-modal
 const addSiteModal = new Modal(document.getElementById("add-site-modal"));
 // add-site-btn
@@ -20,29 +27,3 @@ const errorAlertClose = document.getElementById("error-alert-close");
 errorAlertClose.addEventListener("click", function () {
   errorAlert.close();
 });
-
-function createRipple(event) {
-  const button = event.currentTarget;
-
-  const circle = document.createElement("span");
-  const diameter = Math.max(button.clientWidth, button.clientHeight);
-  const radius = diameter / 2;
-
-  circle.style.width = circle.style.height = `${diameter}px`;
-  circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
-  circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
-  circle.classList.add("ripple");
-
-  const ripple = button.getElementsByClassName("ripple")[0];
-
-  if (ripple) {
-    ripple.remove();
-  }
-
-  button.appendChild(circle);
-}
-
-const buttons = document.getElementsByTagName("button");
-for (const button of buttons) {
-  button.addEventListener("click", createRipple);
-}

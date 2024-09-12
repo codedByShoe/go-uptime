@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 	"sync"
 	"time"
 
@@ -71,6 +72,26 @@ func (h *handler) postAddSite(c *fiber.Ctx) error {
 		return c.RedirectToRoute("index", fiber.Map{"Error": err.Error()})
 	}
 	return c.Redirect(fmt.Sprintf("/site/%d", site.ID), 302)
+}
+
+func (h *handler) postAddEndpoint(c *fiber.Ctx) error {
+	id, _ := strconv.Atoi(c.FormValue("id"))
+	path := c.FormValue("path")
+	freq, _ := strconv.Atoi(c.FormValue("frequency"))
+	url := c.FormValue("url")
+
+	endpoint := Endpoint{
+		Path:        path,
+		Status:      checkSites(url + path),
+		Frequency:   time.Duration(freq) * time.Second,
+		LastChecked: time.Now(),
+		Uptime:      0,
+		SiteID:      uint(id),
+	}
+	if err := h.db.Create(&endpoint).Error; err != nil {
+		return c.RedirectToRoute("index", fiber.Map{"Error": err.Error()})
+	}
+	return c.RedirectBack(fmt.Sprintf("/site/%d", id))
 }
 
 func checkSites(url string) string {
